@@ -1,20 +1,22 @@
 #!/bin/sh
 
 set -e
-if [ ! -d "$HOME/Downloads" ]; then
-  mkdir $HOME/Downloads
-fi
 
-if [ ! -e "$HOME/Downloads/miniconda3.sh" ]; then
-  wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/Downloads/miniconda3.sh
-  chmod +x $HOME/Downloads/miniconda3.sh
+if [ ! -d $HOME/.cache/clean_miniconda3/$PYTHON_VERSION ]; then
+    echo "Cached enviroment not found. Download and create new conda eviroment."
+    wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/Miniconda3-latest-Linux-x86_64.sh
+    chmod +x $HOME/Miniconda3-latest-Linux-x86_64.sh
+    $HOME/Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3
+    
+    
+    $HOME/miniconda3/bin/conda install --yes python=$PYTHON_VERSION $CONDA_DEPENDENCIES
+    $HOME/miniconda3/bin/pip install $PIP_DEPENDENCIES
+    
+    $HOME/miniconda3/bin/conda clean --yes --tarballs
+    
+    cp -r $HOME/miniconda3 $HOME/.cache/clean_miniconda3/$PYTHON_VERSION
 else
-  echo 'Using cached miniconda installer.';
+    echo "Use chached miniconda enviroment."
+    cp -r $HOME/.cache/clean_miniconda3/$PYTHON_VERSION $HOME/miniconda3
 fi
-
-$HOME/Downloads/miniconda3.sh -b
-
-rm -r -f $HOME/miniconda3/pkgs
-ln -s $HOME/.cache/miniconda3_pkgs $HOME/miniconda3/pkgs
-
 

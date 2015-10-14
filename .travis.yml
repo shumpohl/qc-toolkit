@@ -1,8 +1,12 @@
-language: python
-python:
-  - "3.3"
-  - "3.4"
-  - "3.5"
+language: c
+env:
+  global:
+    - CONDA_DEPENDENCIES="atlas numpy scipy matplotlib coverage pyflakes pip"
+    - PIP_DEPENDENCIES="coveralls"
+  matrix:
+    - PYTHON_VERSION="3.3"
+    - PYTHON_VERSION="3.4"
+    - PYTHON_VERSION="3.5"
 
 #use container based infrastructure
 sudo: false
@@ -10,9 +14,7 @@ sudo: false
 #these directories are persistent
 cache:
   directories:
-    - $HOME/.cache/pip
-    - $HOME/.cache/miniconda3_pkgs
-    - $HOME/Downloads
+    - $HOME/.cache/clean_miniconda3
 
 # Setup anaconda
 before_install:
@@ -21,9 +23,6 @@ before_install:
   - ./install_miniconda3.sh
 #
   - export PATH=$HOME/miniconda3/bin:$PATH
-  - conda update --yes conda
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION pip atlas numpy scipy matplotlib
-  - pip install pyflakes coverage coveralls
 install:
   - python setup.py install
 script:
