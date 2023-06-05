@@ -238,26 +238,60 @@ htmlhelp_basename = 'qupulse-doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
+latex_engine = 'lualatex'
+
+latex_toplevel_sectioning = 'section'
+
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+'papersize': 'a4paper',
 
 # The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+'pointsize': '12pt',
 
 # Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    'extraclassoptions': 'openany',  # Optional: Remove blank pages between chapters
+    'preamble': r'''
+    % Disable the default title and author
+    \renewcommand{\maketitle}{}
+    \renewcommand{\sphinxmaketitle}{}
+    \renewcommand{\sphinxbackoftitlepage}{}
+    % Disable the table of contents
+    \renewcommand{\tableofcontents}{}
+    % Use the 'titlesec' package to remove chapter prefixes
+    \usepackage{titlesec}
+    \titleformat{\chapter}[display]
+        {\normalfont\huge\bfseries}{}{0pt}{\Huge}
+    \titleformat{name=\chapter,numberless}[display]
+        {\normalfont\huge\bfseries}{}{0pt}{\Huge}
+    % Customize the formatting for sections, if desired
+    \titleformat{\section}
+        {\normalfont\Large\bfseries}{\thesection}{1em}{}
+    % Customize the formatting for subsections, if desired
+    \titleformat{\subsection}
+        {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+    % Customize the formatting for subsubsections, if desired
+    \titleformat{\subsubsection}
+        {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+    % Customize the formatting for paragraphs, if desired
+    \titleformat{\paragraph}[runin]
+        {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+    % Customize the formatting for subparagraphs, if desired
+    \titleformat{\subparagraph}[runin]
+        {\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{}
+''',
 
 # Latex figure (float) alignment
 #'figure_align': 'htbp',
+    'babel': '% use given babel',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'qupulse.tex', 'qupulse Documentation',
-   author, 'manual'),
+    (master_doc, 'qupulse.tex', 'qupulse Documentation', author, 'manual'),
+#    ('concepts/concepts', 'qupulse_concepts.tex', 'title_test', 'author_test', 'manual')
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -278,7 +312,7 @@ latex_documents = [
 #latex_appendices = []
 
 # If false, no module index is generated.
-#latex_domain_indices = True
+latex_domain_indices = False
 
 
 # -- Options for manual page output ---------------------------------------
