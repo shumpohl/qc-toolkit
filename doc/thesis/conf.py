@@ -16,11 +16,15 @@ html_favicon = None
 latex_engine = 'lualatex'
 
 latex_documents = [
-    ('index', 'index.tex', '', '', 'howto', True),
+    ('index', 'qupulse.tex', '', '', 'howto', True),
 ]
 
-exclude_patterns.append('references.rst')
-suppress_warnings = ['toc.excluded']
+set_warnings_formatting = "import warnings, pathlib, functools, os; warnings.formatwarning = functools.wraps(warnings.formatwarning)(lambda message, category, filename, lineno, function, line=None: f'{category.__name__}: {message} (line {lineno} in {pathlib.Path(filename).relative_to(os.getcwd())})')"
+
+nbsphinx_execute_arguments.append("--InteractiveShellApp.exec_lines=['{set_warnings_formatting!r}']")
+
+# exclude_patterns.append('references.rst')
+# suppress_warnings = ['toc.excluded']
 
 for relative_conf_path in ('html_static_path', 'templates_path'):
     if relative_conf_path in locals():
